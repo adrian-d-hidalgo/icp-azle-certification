@@ -1,0 +1,34 @@
+{
+  "canisters": {
+    "patients": {
+      "type": "custom",
+      "main": "src/canisters/patients/patients.actor.ts",
+      "candid": "src/canisters/patients/patients.actor.did",
+      "build": "npx azle patients",
+      "wasm": ".azle/patients/patients.wasm",
+      "gzip": true,
+      "declarations": {
+        "output": "test/dfx_generated/patients",
+        "node_compatibility": true
+      }
+    },
+    "medical-histories": {
+      "type": "custom",
+      "main": "src/canisters/medical-histories/medical-histories.actor.ts",
+      "candid": "src/canisters/medical-histories/medical-histories.actor.did",
+      "build": "npx azle medical-histories",
+      "wasm": ".azle/medical-histories/medical-histories.wasm",
+      "gzip": true,
+      "declarations": {
+        "output": "test/dfx_generated/medical-histories",
+        "node_compatibility": true
+      }
+    }
+  },
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:8000",
+      "type": "ephemeral"
+    }
+  }
+}

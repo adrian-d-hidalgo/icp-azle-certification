@@ -1,0 +1,11 @@
+# Azle
+.azle
+*.did
+
+# DFX
+.dfx
+dfx_generated
+
+# Node
+node_modules
+

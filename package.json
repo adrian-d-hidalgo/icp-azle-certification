@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "dfx:start": "dfx start --background",
+    "dfx:start:clean": "dfx start --background --clean",
+    "dfx:stop": "dfx stop",
+    "dfx:deploy": "dfx deploy",
+    "dfx:deploy:mainnet": "dfx deploy --network ic",
+    "dfx:uninstall": "dfx canister uninstall-code"
+  },
+  "dependencies": {
+    "azle": "0.18.2"
+  }
+}
