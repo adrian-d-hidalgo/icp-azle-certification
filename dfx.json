@@ -12,15 +12,15 @@
         "node_compatibility": true
       }
     },
-    "medical-histories": {
+    "medical-profiles": {
       "type": "custom",
-      "main": "src/canisters/medical-histories/medical-histories.actor.ts",
-      "candid": "src/canisters/medical-histories/medical-histories.actor.did",
-      "build": "npx azle medical-histories",
-      "wasm": ".azle/medical-histories/medical-histories.wasm",
+      "main": "src/canisters/medical-profiles/medical-profiles.actor.ts",
+      "candid": "src/canisters/medical-profiles/medical-profiles.actor.did",
+      "build": "npx azle medical-profiles",
+      "wasm": ".azle/medical-profiles/medical-profiles.wasm",
       "gzip": true,
       "declarations": {
-        "output": "test/dfx_generated/medical-histories",
+        "output": "test/dfx_generated/medical-profiles",
         "node_compatibility": true
       }
     }

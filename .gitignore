@@ -9,3 +9,5 @@ dfx_generated
 # Node
 node_modules
 
+# Config files
+.env
