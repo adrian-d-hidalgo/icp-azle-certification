@@ -23,6 +23,18 @@
         "output": "test/dfx_generated/medical-profiles",
         "node_compatibility": true
       }
+    },
+    "prescriptions": {
+      "type": "custom",
+      "main": "src/canisters/prescriptions/prescriptions.actor.ts",
+      "candid": "src/canisters/prescriptions/prescriptions.actor.did",
+      "build": "npx azle prescriptions",
+      "wasm": ".azle/prescriptions/prescriptions.wasm",
+      "gzip": true,
+      "declarations": {
+        "output": "test/dfx_generated/prescriptions",
+        "node_compatibility": true
+      }
     }
   },
   "networks": {

@@ -72,7 +72,7 @@ export default Canister({
 
     return Ok(patient);
   }),
-  // TODO: Fix this, I think this doesn`t work due you can't do nested queries
+  // TODO: This action is not possible, due isn't allowed inter-canister query calls
   getMedicalProfile: query(
     [Principal],
     Result(MedicalProfile, MedicalProfileErrors),

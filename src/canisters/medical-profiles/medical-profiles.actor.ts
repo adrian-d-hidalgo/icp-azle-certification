@@ -14,13 +14,13 @@ import {
 } from "azle";
 import {
   Diagnosis,
-  DrugPrescription,
   MedicalProfile,
   MedicalProfileType,
-  Prescription,
 } from "./medical-profiles.models";
 import { generateId } from "../../utilities/helpers";
 import { MedicalProfileErrors } from "./medical-profiles.errors";
+import { PrescriptionDrug } from "../prescriptions/prescription.models";
+import { PrescriptionCaller } from "../prescriptions/prescription.caller";
 
 let medicalProfiles = StableBTreeMap(Principal, MedicalProfile, 0);
 
@@ -40,9 +40,9 @@ export default Canister({
   }),
 
   addDiagnosis: update(
-    [Principal, text, Vec(DrugPrescription)],
+    [Principal, text, Vec(PrescriptionDrug)],
     Result(Diagnosis, MedicalProfileErrors),
-    (profileId, description, drugs) => {
+    async (profileId, description, drugs) => {
       const profileOpts = medicalProfiles.get(profileId);
 
       if ("None" in profileOpts) {
@@ -51,19 +51,14 @@ export default Canister({
         });
       }
 
-      const prescriptionId = generateId();
-
-      const prescription: typeof Prescription = {
-        id: prescriptionId,
-        drugs,
-        createdAt: ic.time(),
-      };
+      const prescriptionCanister = new PrescriptionCaller();
+      const prescription = await prescriptionCanister.create(drugs);
 
       const id = generateId();
       const diagnosis: typeof Diagnosis = {
         id,
         description,
-        prescriptions: prescription ? [prescription] : [],
+        prescriptions: prescription ? [prescription.id] : [],
         createdAt: ic.time(),
       };
 
