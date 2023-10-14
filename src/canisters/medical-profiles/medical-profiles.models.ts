@@ -10,14 +10,14 @@ export const DrugPrescription = Record({
 });
 
 export const Prescription = Record({
+  id: Principal,
   drugs: Vec(DrugPrescription),
   // createdBy: Principal, // TODO: Doctor Principal
   createdAt: nat64,
 });
 
 export const Diagnosis = Record({
-  // TODO: Add doctor information
-  date: nat64,
+  id: Principal,
   description: text,
   prescriptions: Vec(Prescription),
   // createdBy: Principal, // TODO: Doctor Principal
