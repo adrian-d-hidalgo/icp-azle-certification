@@ -1,7 +1,7 @@
 import { Principal, ic } from "azle";
 import MedicalProfileCanister from "./medical-profiles.actor";
 
-export class MedicalProfileConnect {
+export class MedicalProfileCaller {
   private canister: typeof MedicalProfileCanister;
 
   constructor() {

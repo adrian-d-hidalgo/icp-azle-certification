@@ -16,24 +16,24 @@ import { Patient } from "./patients.models";
 import { PatientType } from "./patients.types";
 import { PatientsErrors } from "./patients.errors";
 import { GetAllPatientsResponse } from "./patients.responses";
-import { MedicalProfileConnect } from "../medical-profiles/medical-profiles.connector";
+import { MedicalProfileCaller } from "../medical-profiles/medical-profiles.caller";
 import { MedicalProfile } from "../medical-profiles/medical-profiles.models";
 import { MedicalProfileErrors } from "../medical-profiles/medical-profiles.errors";
 
 let patients = StableBTreeMap(Principal, Patient, 0);
-// let profileCanister: MedicalProfileConnect;
+// let profileCaller: MedicalProfileCaller;
 
 export default Canister({
   init: init([], () => {
-    // profileCanister = new MedicalProfileConnect();
+    // profileCaller = new MedicalProfileCaller();
   }),
   create: update(
     [text, text, text],
     Patient,
     async (firstName, lastName, curp) => {
       const id = generateId();
-      const profileCanister = new MedicalProfileConnect();
-      const medicalProfile = await profileCanister.create(id);
+      const profileCaller = new MedicalProfileCaller();
+      const medicalProfile = await profileCaller.create(id);
 
       const patient: PatientType = {
         id,
@@ -77,8 +77,8 @@ export default Canister({
     [Principal],
     Result(MedicalProfile, MedicalProfileErrors),
     (patientId) => {
-      const profileCanister = new MedicalProfileConnect();
-      return profileCanister.getByPatient(patientId);
+      const profileCaller = new MedicalProfileCaller();
+      return profileCaller.getByPatient(patientId);
     }
   ),
 });
