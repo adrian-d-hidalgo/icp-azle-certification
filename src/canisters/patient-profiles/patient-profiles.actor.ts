@@ -14,40 +14,40 @@ import {
 } from "azle";
 import {
   Diagnosis,
-  MedicalProfile,
-  MedicalProfileType,
-} from "./medical-profiles.models";
+  PatientProfile,
+  PatientProfileType,
+} from "./patient-profiles.models";
 import { generateId } from "../../utilities/helpers";
-import { MedicalProfileErrors } from "./medical-profiles.errors";
+import { PatientProfilesErrors } from "./patient-profiles.errors";
 import { PrescriptionDrug } from "../prescriptions/prescription.models";
 import { PrescriptionCaller } from "../prescriptions/prescription.caller";
 
-let medicalProfiles = StableBTreeMap(Principal, MedicalProfile, 0);
+let profiles = StableBTreeMap(Principal, PatientProfile, 0);
 
 export default Canister({
-  create: update([Principal], MedicalProfile, (patientId) => {
+  create: update([Principal], PatientProfile, (userId) => {
     const id = generateId();
-    const profile: MedicalProfileType = {
+    const profile: PatientProfileType = {
       id,
-      patientId,
+      userId,
       diagnoses: [],
       prescriptions: [],
     };
 
-    medicalProfiles.insert(id, profile);
+    profiles.insert(id, profile);
 
     return profile;
   }),
 
   addDiagnosis: update(
     [Principal, text, Vec(PrescriptionDrug)],
-    Result(Diagnosis, MedicalProfileErrors),
+    Result(Diagnosis, PatientProfilesErrors),
     async (profileId, description, drugs) => {
-      const profileOpts = medicalProfiles.get(profileId);
+      const profileOpt = profiles.get(profileId);
 
-      if ("None" in profileOpts) {
+      if ("None" in profileOpt) {
         return Err({
-          MedicalProfileDoesNotExist: profileId,
+          PatientProfileDoesNotExist: profileId,
         });
       }
 
@@ -55,6 +55,7 @@ export default Canister({
       const prescription = await prescriptionCanister.create(drugs);
 
       const id = generateId();
+
       const diagnosis: typeof Diagnosis = {
         id,
         description,
@@ -62,54 +63,53 @@ export default Canister({
         createdAt: ic.time(),
       };
 
-      const profile = profileOpts.Some;
+      const profile = profileOpt.Some;
       profile.diagnoses.push(diagnosis);
 
-      medicalProfiles.insert(profile.id, profile);
+      profiles.insert(profile.id, profile);
 
       return Ok(diagnosis);
     }
   ),
 
   delete: update([Principal], Void, (id) => {
-    medicalProfiles.remove(id);
+    profiles.remove(id);
   }),
 
   get: query(
     [Principal],
-    Result(MedicalProfile, MedicalProfileErrors),
+    Result(PatientProfile, PatientProfilesErrors),
     (profileId) => {
-      const profileOpts = medicalProfiles.get(profileId);
+      const profileOpt = profiles.get(profileId);
 
-      if ("None" in profileOpts) {
+      if ("None" in profileOpt) {
         return Err({
-          MedicalProfileDoesNotExist: profileId,
+          PatientProfileDoesNotExist: profileId,
         });
       }
 
-      const profile = profileOpts.Some;
+      const profile = profileOpt.Some;
 
       return Ok(profile);
     }
   ),
 
-  getAll: query([], Vec(MedicalProfile), () => {
-    return medicalProfiles.values();
+  getAll: query([], Vec(PatientProfile), () => {
+    return profiles.values();
   }),
 
-  getByPatient: query(
+  getByUser: query(
     [Principal],
-    Result(MedicalProfile, MedicalProfileErrors),
-    (patientId) => {
-      const profiles = medicalProfiles.values();
-      const profile = profiles.find(
-        (p) => p.patientId.toText() === patientId.toText()
-      );
+    Result(PatientProfile, PatientProfilesErrors),
+    (userId) => {
+      const profile = profiles
+        .values()
+        .find((p) => p.userId.toText() === userId.toText());
 
       if (profile) return Ok(profile);
 
       return Err({
-        MedicalProfileDoesNotExistForPatient: patientId,
+        PatientProfileDoesNotExistForPatient: userId,
       });
     }
   ),

@@ -10,8 +10,8 @@ export class PrescriptionCaller {
       // TODO: Fix this, I can't get values from .env files and dotenv has errors
       Principal.fromText("be2us-64aaa-aaaaa-qaabq-cai")
       //   Principal.fromText(
-      //     process.env.PRESCRIPTION_PRINCIPAL ??
-      //       ic.trap("process.env.PRESCRIPTION_PRINCIPAL is undefined")
+      //     process.env.PRESCRIPTIONS_PRINCIPAL ??
+      //       ic.trap("process.env.PRESCRIPTIONS_PRINCIPAL is undefined")
       //   )
     );
   }

@@ -8,11 +8,11 @@ export const Diagnosis = Record({
   createdAt: nat64,
 });
 
-export const MedicalProfile = Record({
+export const PatientProfile = Record({
   id: Principal,
-  patientId: Principal,
+  userId: Principal,
   diagnoses: Vec(Diagnosis),
   prescriptions: Vec(Principal),
 });
 
-export type MedicalProfileType = typeof MedicalProfile;
+export type PatientProfileType = typeof PatientProfile;

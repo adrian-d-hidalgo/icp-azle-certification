@@ -1,26 +1,26 @@
 {
   "canisters": {
-    "patients": {
+    "users": {
       "type": "custom",
-      "main": "src/canisters/patients/patients.actor.ts",
-      "candid": "src/canisters/patients/patients.actor.did",
-      "build": "npx azle patients",
-      "wasm": ".azle/patients/patients.wasm",
+      "main": "src/canisters/users/users.actor.ts",
+      "candid": "src/canisters/users/users.actor.did",
+      "build": "npx azle users",
+      "wasm": ".azle/users/users.wasm",
       "gzip": true,
       "declarations": {
-        "output": "test/dfx_generated/patients",
+        "output": "test/dfx_generated/users",
         "node_compatibility": true
       }
     },
-    "medical-profiles": {
+    "patient-profiles": {
       "type": "custom",
-      "main": "src/canisters/medical-profiles/medical-profiles.actor.ts",
-      "candid": "src/canisters/medical-profiles/medical-profiles.actor.did",
-      "build": "npx azle medical-profiles",
-      "wasm": ".azle/medical-profiles/medical-profiles.wasm",
+      "main": "src/canisters/patient-profiles/patient-profiles.actor.ts",
+      "candid": "src/canisters/patient-profiles/patient-profiles.actor.did",
+      "build": "npx azle patient-profiles",
+      "wasm": ".azle/patient-profiles/patient-profiles.wasm",
       "gzip": true,
       "declarations": {
-        "output": "test/dfx_generated/medical-profiles",
+        "output": "test/dfx_generated/patient-profiles",
         "node_compatibility": true
       }
     },
