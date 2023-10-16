@@ -1,4 +1,4 @@
-import { Principal, Record, Some, nat64, text } from "azle";
+import { Opt, Principal, Record, nat64, text } from "azle";
 
 export const Profile = Record({
   firstName: text,
@@ -12,7 +12,7 @@ export const User = Record({
   id: Principal, // ICP Principal
   profile: Profile,
   patientProfile: Principal,
-  // patientProfile: Opt(Principal),
+  doctorProfile: Opt(Principal),
   createdAt: nat64,
 });
 

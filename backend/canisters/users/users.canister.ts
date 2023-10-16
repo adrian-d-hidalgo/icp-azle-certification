@@ -10,6 +10,7 @@ export default Canister({
     [text, text, text],
     User,
     async (firstName, lastName, curp) => {
+      // TODO: The caller only can create its own user
       const data = {
         profile: {
           firstName,

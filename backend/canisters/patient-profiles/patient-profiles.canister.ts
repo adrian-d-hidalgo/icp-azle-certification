@@ -1,34 +1,17 @@
-import {
-  Canister,
-  Err,
-  Ok,
-  Principal,
-  Result,
-  StableBTreeMap,
-  Vec,
-  Void,
-  ic,
-  query,
-  text,
-  update,
-} from "azle";
+import { Canister, Principal, Result, Vec, query, text, update } from "azle";
 import {
   Diagnosis,
+  DiagnosisSymptom,
   PatientProfile,
-  PatientProfileType,
 } from "./models/patient-profiles.models";
-import { generateId } from "../../utilities/helpers";
 import { PatientProfilesErrors } from "./services/patient-profiles.service.errors";
-import { PrescriptionDrug } from "../prescriptions/models/prescription.models";
-import { PrescriptionCaller } from "../prescriptions/prescriptions.caller";
 import { PatientProfilesService } from "./services/patient-profiles.service";
 
 const patientProfilesService = new PatientProfilesService();
 
 export default Canister({
   create: update([], PatientProfile, () => {
-    const profile = patientProfilesService.create();
-    return profile;
+    return patientProfilesService.create();
   }),
 
   get: query(
@@ -44,10 +27,24 @@ export default Canister({
   }),
 
   addDiagnosis: update(
-    [Principal, text, Vec(PrescriptionDrug)],
+    [Principal, text, Vec(DiagnosisSymptom), Vec(text), Principal],
     Result(Diagnosis, PatientProfilesErrors),
-    async (profileId, description, drugs) => {
-      return patientProfilesService.addDiagnosis(profileId, description, drugs);
+    async (profileId, description, symptoms, treatmens, createdBy) => {
+      return patientProfilesService.addDiagnosis(
+        profileId,
+        createdBy, // TODO: The caller only can create diagnosis, validate if caller exists
+        description,
+        symptoms,
+        treatmens
+      );
     }
   ),
+
+  // getAllDiagnoses: query(
+  //   [Principal],
+  //   Result(Vec(Diagnosis), PatientProfilesErrors),
+  //   (profileId) => {
+  //     return patientProfilesService.getAllDiagnoses(profileId);
+  //   }
+  // ),
 });

@@ -1,6 +1,6 @@
-import { Principal, ic } from "azle";
+import { Principal, ic, text } from "azle";
 import PrescriptionCanister from "./prescriptions.canister";
-import { PrescriptionDrugType } from "./models/prescription.models";
+import { PrescriptionDrugType } from "./models/prescription-drugs.models";
 
 export class PrescriptionCaller {
   private canister: typeof PrescriptionCanister;
@@ -16,9 +16,14 @@ export class PrescriptionCaller {
     );
   }
 
-  public async create(drugs: Array<PrescriptionDrugType>) {
+  public async create(
+    patient: Principal,
+    doctor: Principal,
+    drugs: Array<PrescriptionDrugType>,
+    notes: text
+  ) {
     const medicalProfile = await ic.call(this.canister.create, {
-      args: [drugs],
+      args: [patient, doctor, drugs, notes],
     });
 
     return medicalProfile;

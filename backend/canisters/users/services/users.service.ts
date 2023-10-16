@@ -1,4 +1,4 @@
-import { Err, Ok, Principal, StableBTreeMap, Vec, ic } from "azle";
+import { Err, None, Ok, Principal, StableBTreeMap, ic } from "azle";
 import { User, UserType } from "../models/users.models";
 import { PatientProfilesCaller } from "../../patient-profiles/patient-profiles.caller";
 import { generateId } from "../../../utilities/helpers";
@@ -17,6 +17,7 @@ export class UsersService {
       id,
       profile: data.profile,
       patientProfile: patientProfile.id,
+      doctorProfile: None,
       createdAt: ic.time(),
     };
 

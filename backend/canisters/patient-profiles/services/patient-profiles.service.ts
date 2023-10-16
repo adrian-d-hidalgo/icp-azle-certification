@@ -1,23 +1,28 @@
 import { Err, Ok, Principal, StableBTreeMap, Vec, ic, text } from "azle";
 import {
   Diagnosis,
+  DiagnosisSymptomType,
   PatientProfile,
   PatientProfileType,
 } from "../models/patient-profiles.models";
 import { generateId } from "../../../utilities/helpers";
-import { PrescriptionCaller } from "../../prescriptions/prescriptions.caller";
-import { PrescriptionDrug } from "../../prescriptions/models/prescription.models";
 
 export class PatientProfilesService {
   private profiles = StableBTreeMap(Principal, PatientProfile, 0);
-  private prescriptionCanister = new PrescriptionCaller();
 
   public create() {
     const id = generateId();
     const profile: PatientProfileType = {
       id,
-      diagnoses: [],
-      prescriptions: [],
+      cardex: [],
+      medicalHistory: {
+        diagnoses: [],
+        prescriptions: [],
+      },
+      permissions: {
+        doctors: [],
+        organizations: [],
+      },
     };
 
     this.profiles.insert(id, profile);
@@ -46,8 +51,10 @@ export class PatientProfilesService {
 
   public async addDiagnosis(
     profileId: Principal,
+    createdBy: Principal,
     description: text,
-    drugs: Vec<typeof PrescriptionDrug>
+    symptoms: Vec<DiagnosisSymptomType>,
+    treatmens: Vec<text>
   ) {
     const profileOpt = this.profiles.get(profileId);
 
@@ -57,22 +64,38 @@ export class PatientProfilesService {
       });
     }
 
-    const prescription = await this.prescriptionCanister.create(drugs);
-
+    const profile = profileOpt.Some;
     const id = generateId();
 
     const diagnosis: typeof Diagnosis = {
       id,
       description,
-      prescriptions: prescription ? [prescription.id] : [],
+      symptoms,
+      treatmens,
+      prescriptions: [],
+      notes: [],
+      createdBy,
       createdAt: ic.time(),
     };
 
-    const profile = profileOpt.Some;
-    profile.diagnoses.push(diagnosis);
+    profile.medicalHistory.diagnoses.push(diagnosis);
 
     this.profiles.insert(profile.id, profile);
 
     return Ok(diagnosis);
+  }
+
+  public getAllDiagnoses(profileId: Principal) {
+    const profileOpt = this.profiles.get(profileId);
+
+    if ("None" in profileOpt) {
+      return Err({
+        PatientProfileDoesNotExist: profileId,
+      });
+    }
+
+    const diagnoses = profileOpt.Some.medicalHistory.diagnoses;
+
+    return diagnoses;
   }
 }
