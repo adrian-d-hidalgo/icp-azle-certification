@@ -5,7 +5,8 @@
     "dfx:stop": "dfx stop",
     "dfx:deploy": "dfx deploy",
     "dfx:deploy:mainnet": "dfx deploy --network ic",
-    "dfx:uninstall": "dfx canister uninstall-code"
+    "dfx:uninstall": "dfx canister uninstall-code",
+    "start:clean": "npx azle clean && npm run dfx:start:clean"
   },
   "dependencies": {
     "azle": "0.18.2"

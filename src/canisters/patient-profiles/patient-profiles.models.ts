@@ -10,7 +10,6 @@ export const Diagnosis = Record({
 
 export const PatientProfile = Record({
   id: Principal,
-  userId: Principal,
   diagnoses: Vec(Diagnosis),
   prescriptions: Vec(Principal),
 });

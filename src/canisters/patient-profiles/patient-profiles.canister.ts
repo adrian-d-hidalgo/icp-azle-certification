@@ -25,11 +25,10 @@ import { PrescriptionCaller } from "../prescriptions/prescription.caller";
 let profiles = StableBTreeMap(Principal, PatientProfile, 0);
 
 export default Canister({
-  create: update([Principal], PatientProfile, (userId) => {
+  create: update([], PatientProfile, () => {
     const id = generateId();
     const profile: PatientProfileType = {
       id,
-      userId,
       diagnoses: [],
       prescriptions: [],
     };
@@ -97,20 +96,4 @@ export default Canister({
   getAll: query([], Vec(PatientProfile), () => {
     return profiles.values();
   }),
-
-  getByUser: query(
-    [Principal],
-    Result(PatientProfile, PatientProfilesErrors),
-    (userId) => {
-      const profile = profiles
-        .values()
-        .find((p) => p.userId.toText() === userId.toText());
-
-      if (profile) return Ok(profile);
-
-      return Err({
-        PatientProfileDoesNotExistForPatient: userId,
-      });
-    }
-  ),
 });

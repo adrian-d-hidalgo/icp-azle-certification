@@ -2,8 +2,6 @@ import { Canister, Principal, query, Result, text, update } from "azle";
 import { User } from "./models/users.models";
 import { UsersErrors } from "./services/users.service.errors";
 import { GetAllUsersResponse } from "./users.responses";
-// import { PatientProfile } from "../patient-profiles/patient-profiles.models";
-// import { PatientProfilesErrors } from "../patient-profiles/patient-profiles.errors";
 import { UsersService } from "./services/users.service";
 
 let usersService = new UsersService();

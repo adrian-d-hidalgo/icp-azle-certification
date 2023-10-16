@@ -1,5 +1,5 @@
 import { Principal, ic } from "azle";
-import PrescriptionCanister from "./prescriptions.actor";
+import PrescriptionCanister from "./prescriptions.canister";
 import { PrescriptionDrug } from "./prescription.models";
 
 export class PrescriptionCaller {
@@ -8,7 +8,7 @@ export class PrescriptionCaller {
   constructor() {
     this.canister = PrescriptionCanister(
       // TODO: Fix this, I can't get values from .env files and dotenv has errors
-      Principal.fromText("be2us-64aaa-aaaaa-qaabq-cai")
+      Principal.fromText("bd3sg-teaaa-aaaaa-qaaba-cai")
       //   Principal.fromText(
       //     process.env.PRESCRIPTIONS_PRINCIPAL ??
       //       ic.trap("process.env.PRESCRIPTIONS_PRINCIPAL is undefined")

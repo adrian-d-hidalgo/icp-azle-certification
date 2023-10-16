@@ -2,8 +2,8 @@
   "canisters": {
     "users": {
       "type": "custom",
-      "main": "src/canisters/users/users.actor.ts",
-      "candid": "src/canisters/users/users.actor.did",
+      "main": "src/canisters/users/users.canister.ts",
+      "candid": "src/canisters/users/users.did",
       "build": "npx azle users",
       "wasm": ".azle/users/users.wasm",
       "gzip": true,
@@ -14,8 +14,8 @@
     },
     "patient-profiles": {
       "type": "custom",
-      "main": "src/canisters/patient-profiles/patient-profiles.actor.ts",
-      "candid": "src/canisters/patient-profiles/patient-profiles.actor.did",
+      "main": "src/canisters/patient-profiles/patient-profiles.canister.ts",
+      "candid": "src/canisters/patient-profiles/patient-profiles.did",
       "build": "npx azle patient-profiles",
       "wasm": ".azle/patient-profiles/patient-profiles.wasm",
       "gzip": true,
@@ -26,8 +26,8 @@
     },
     "prescriptions": {
       "type": "custom",
-      "main": "src/canisters/prescriptions/prescriptions.actor.ts",
-      "candid": "src/canisters/prescriptions/prescriptions.actor.did",
+      "main": "src/canisters/prescriptions/prescriptions.canister.ts",
+      "candid": "src/canisters/prescriptions/prescriptions.did",
       "build": "npx azle prescriptions",
       "wasm": ".azle/prescriptions/prescriptions.wasm",
       "gzip": true,
