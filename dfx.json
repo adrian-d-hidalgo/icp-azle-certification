@@ -1,26 +1,38 @@
 {
   "canisters": {
-    "patients": {
+    "users": {
       "type": "custom",
-      "main": "src/canisters/patients/patients.actor.ts",
-      "candid": "src/canisters/patients/patients.actor.did",
-      "build": "npx azle patients",
-      "wasm": ".azle/patients/patients.wasm",
+      "main": "backend/canisters/users/users.canister.ts",
+      "candid": "backend/canisters/users/users.did",
+      "build": "npx azle users",
+      "wasm": ".azle/users/users.wasm",
       "gzip": true,
       "declarations": {
-        "output": "test/dfx_generated/patients",
+        "output": "test/dfx_generated/users",
         "node_compatibility": true
       }
     },
-    "medical-histories": {
+    "patient-profiles": {
       "type": "custom",
-      "main": "src/canisters/medical-histories/medical-histories.actor.ts",
-      "candid": "src/canisters/medical-histories/medical-histories.actor.did",
-      "build": "npx azle medical-histories",
-      "wasm": ".azle/medical-histories/medical-histories.wasm",
+      "main": "backend/canisters/patient-profiles/patient-profiles.canister.ts",
+      "candid": "backend/canisters/patient-profiles/patient-profiles.did",
+      "build": "npx azle patient-profiles",
+      "wasm": ".azle/patient-profiles/patient-profiles.wasm",
       "gzip": true,
       "declarations": {
-        "output": "test/dfx_generated/medical-histories",
+        "output": "test/dfx_generated/patient-profiles",
+        "node_compatibility": true
+      }
+    },
+    "prescriptions": {
+      "type": "custom",
+      "main": "backend/canisters/prescriptions/prescriptions.canister.ts",
+      "candid": "backend/canisters/prescriptions/prescriptions.did",
+      "build": "npx azle prescriptions",
+      "wasm": ".azle/prescriptions/prescriptions.wasm",
+      "gzip": true,
+      "declarations": {
+        "output": "test/dfx_generated/prescriptions",
         "node_compatibility": true
       }
     }
