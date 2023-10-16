@@ -9,9 +9,13 @@ export const PrescriptionDrug = Record({
   indications: text, // TODO: Make it optional
 });
 
+export type PrescriptionDrugType = typeof PrescriptionDrug;
+
 export const Prescription = Record({
   id: Principal,
   drugs: Vec(PrescriptionDrug),
   // createdBy: Principal, // TODO: Doctor Principal
   createdAt: nat64,
 });
+
+export type PrescriptionType = typeof Prescription;

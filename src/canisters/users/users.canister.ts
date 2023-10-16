@@ -1,10 +1,9 @@
-import { Canister, Principal, query, Result, text, update } from "azle";
+import { Canister, Principal, query, Result, text, update, Vec } from "azle";
 import { User } from "./models/users.models";
 import { UsersErrors } from "./services/users.service.errors";
-import { GetAllUsersResponse } from "./users.responses";
 import { UsersService } from "./services/users.service";
 
-let usersService = new UsersService();
+const usersService = new UsersService();
 
 export default Canister({
   create: update(
@@ -18,13 +17,14 @@ export default Canister({
           curp,
         },
       };
+
       const user = await usersService.create(data);
 
       return user;
     }
   ),
 
-  getAll: query([], GetAllUsersResponse, () => {
+  getAll: query([], Vec(User), () => {
     const users = usersService.getAll();
     return users;
   }),

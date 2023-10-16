@@ -26,12 +26,7 @@ export class UsersService {
   }
 
   public getAll() {
-    const result = this.users.values().map((user) => ({
-      id: user.id,
-      profile: user.profile,
-    }));
-
-    return result;
+    return this.users.values();
   }
 
   public get(principal: Principal) {
