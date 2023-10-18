@@ -8,9 +8,9 @@ import {
   text,
   update,
 } from "azle";
-import { UsersCaller } from "../../domain/users/users.caller";
+import { UsersCaller } from "../../domain/users/caller";
 import { User } from "../../domain/users/models/users.models";
-import { UsersErrors } from "../../domain/users/users.canister.errors";
+import { UsersErrors } from "../../domain/users/errors";
 import { PatientProfile } from "../../domain/patient-profiles/models/patient-profiles.models";
 // import { AuthGuard } from "../../utilities/auth.guard";
 
@@ -44,6 +44,6 @@ export default Canister({
     }
   ),
   getMyPrescriptions: query([], text, () => {
-    return "Hello from getMyPatientProfile"; // TODO: Add logic to retrieve prescriptions
+    return ic.caller().toUint8Array().toString(); // TODO: Add logic to retrieve prescriptions
   }),
 });

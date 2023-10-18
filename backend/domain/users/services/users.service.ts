@@ -1,6 +1,6 @@
 import { None, Principal, StableBTreeMap, ic } from "azle";
 import { User, UserType } from "../models/users.models";
-import { PatientProfilesCaller } from "../../patient-profiles/patient-profiles.caller";
+import { PatientProfilesCaller } from "../../patient-profiles/caller";
 import { CreateUserData } from "./user.service.types";
 import {
   UserAlreadyExistsError,

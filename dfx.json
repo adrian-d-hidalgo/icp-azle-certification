@@ -2,8 +2,8 @@
   "canisters": {
     "users": {
       "type": "custom",
-      "main": "backend/domain/users/users.canister.ts",
-      "candid": "backend/domain/users/users.did",
+      "main": "backend/domain/users/main.ts",
+      "candid": "backend/domain/users/main.did",
       "build": "npx azle users",
       "wasm": ".azle/users/users.wasm",
       "gzip": true,
@@ -14,8 +14,8 @@
     },
     "patient-profiles": {
       "type": "custom",
-      "main": "backend/domain/patient-profiles/patient-profiles.canister.ts",
-      "candid": "backend/domain/patient-profiles/patient-profiles.did",
+      "main": "backend/domain/patient-profiles/main.ts",
+      "candid": "backend/domain/patient-profiles/main.did",
       "build": "npx azle patient-profiles",
       "wasm": ".azle/patient-profiles/patient-profiles.wasm",
       "gzip": true,
@@ -26,8 +26,8 @@
     },
     "prescriptions": {
       "type": "custom",
-      "main": "backend/domain/prescriptions/prescriptions.canister.ts",
-      "candid": "backend/domain/prescriptions/prescriptions.did",
+      "main": "backend/domain/prescriptions/main.ts",
+      "candid": "backend/domain/prescriptions/main.did",
       "build": "npx azle prescriptions",
       "wasm": ".azle/prescriptions/prescriptions.wasm",
       "gzip": true,
@@ -38,8 +38,8 @@
     },
     "patient-app": {
       "type": "custom",
-      "main": "backend/applications/patient-app/patient-app.canister.ts",
-      "candid": "backend/applications/patient-app/patient-app.did",
+      "main": "backend/applications/patient-app/main.ts",
+      "candid": "backend/applications/patient-app/main.did",
       "build": "npx azle patient-app",
       "wasm": ".azle/patient-app/patient-app.wasm",
       "gzip": true,

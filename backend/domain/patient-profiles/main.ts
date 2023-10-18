@@ -32,7 +32,7 @@ export default Canister({
     async (profileId, description, symptoms, treatmens, createdBy) => {
       return patientProfilesService.addDiagnosis(
         profileId,
-        createdBy, // TODO: The caller only can create diagnosis, validate if caller exists
+        createdBy,
         description,
         symptoms,
         treatmens

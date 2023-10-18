@@ -10,7 +10,7 @@ import {
   Vec,
 } from "azle";
 import { User } from "./models/users.models";
-import { UsersErrors } from "./users.canister.errors";
+import { UsersErrors } from "./errors";
 import { UsersService } from "./services/users.service";
 import { PatientProfile } from "../patient-profiles/models/patient-profiles.models";
 
