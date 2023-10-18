@@ -1,28 +1,48 @@
-import { Err, None, Ok, Principal, StableBTreeMap, ic } from "azle";
+import { None, Principal, StableBTreeMap, ic } from "azle";
 import { User, UserType } from "../models/users.models";
 import { PatientProfilesCaller } from "../../patient-profiles/patient-profiles.caller";
-import { generateId } from "../../../utilities/helpers";
 import { CreateUserData } from "./user.service.types";
+import {
+  UserAlreadyExistsError,
+  UserCouldNotBeCreatedError,
+  UserDoesNotExistError,
+  UserPatientProfileDoesNotExist,
+} from "./user.service.errors";
 
 export class UsersService {
   private users = StableBTreeMap(Principal, User, 0);
   private profileCanister = new PatientProfilesCaller();
 
   public async create(id: Principal, data: CreateUserData) {
-    // TODO: Validate if user already exists with the same curp or official identifier
-    const patientProfile = await this.profileCanister.create();
+    const userFound = this.users
+      .values()
+      .find(
+        (usr) =>
+          usr.id.toText() === id.toText() ||
+          usr.profile.curp === data.profile.curp
+      );
 
-    const patient: UserType = {
-      id,
-      profile: data.profile,
-      patientProfile: patientProfile.id,
-      doctorProfile: None,
-      createdAt: ic.time(),
-    };
+    if (userFound) {
+      throw new UserAlreadyExistsError("This user already exists");
+    }
 
-    this.users.insert(id, patient);
+    try {
+      const patientProfile = await this.profileCanister.create(); // TODO: Remove this profile if create user fails
 
-    return patient;
+      const user: UserType = {
+        id,
+        profile: data.profile,
+        patientProfile: patientProfile.id,
+        doctorProfile: None,
+        createdAt: ic.time(),
+      };
+
+      this.users.insert(id, user);
+
+      return user;
+    } catch (error: any) {
+      throw new UserCouldNotBeCreatedError(error.message);
+    }
   }
 
   public getAll() {
@@ -32,27 +52,24 @@ export class UsersService {
   public get(principal: Principal) {
     const userOpt = this.users.get(principal);
     if ("None" in userOpt) {
-      return Err({
-        UserDoesNotExist: principal,
-      });
+      throw new UserDoesNotExistError(principal.toText());
     }
 
-    const user = userOpt.Some;
-
-    return Ok(user);
+    return userOpt.Some;
   }
 
   public async getPatientProfile(userId: Principal) {
-    const userOpt = this.users.get(userId);
+    try {
+      const user = this.get(userId);
+      const profile = await this.profileCanister.get(user.patientProfile);
 
-    if ("None" in userOpt) {
-      return Err({
-        UserDoesNotExist: userId,
-      });
+      if ("Err" in profile) {
+        throw new UserPatientProfileDoesNotExist(user.patientProfile.toText());
+      }
+
+      return profile.Ok;
+    } catch (error) {
+      throw error;
     }
-
-    const user = userOpt.Some;
-
-    return this.profileCanister.get(user.patientProfile);
   }
 }

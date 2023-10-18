@@ -1,6 +1,16 @@
-import { Canister, Principal, query, Result, text, update, Vec } from "azle";
+import {
+  Canister,
+  Err,
+  Ok,
+  Principal,
+  query,
+  Result,
+  text,
+  update,
+  Vec,
+} from "azle";
 import { User } from "./models/users.models";
-import { UsersErrors } from "./services/users.service.errors";
+import { UsersErrors } from "./users.canister.errors";
 import { UsersService } from "./services/users.service";
 import { PatientProfile } from "../patient-profiles/models/patient-profiles.models";
 
@@ -9,9 +19,8 @@ const usersService = new UsersService();
 export default Canister({
   create: update(
     [Principal, text, text, text],
-    User,
+    Result(User, UsersErrors),
     async (id, firstName, lastName, curp) => {
-      // TODO: The caller only can create its own user
       const data = {
         profile: {
           firstName,
@@ -20,24 +29,44 @@ export default Canister({
         },
       };
 
-      return usersService.create(id, data);
+      try {
+        const user = await usersService.create(id, data);
+        return Ok(user);
+      } catch (error: any) {
+        return Err({
+          UserCouldNotBeCreated: error.message,
+        });
+      }
     }
   ),
 
   getAll: query([], Vec(User), () => {
-    const users = usersService.getAll();
-    return users;
+    return usersService.getAll();
   }),
 
   get: query([Principal], Result(User, UsersErrors), (id) => {
-    return usersService.get(id);
+    try {
+      const user = usersService.get(id);
+      return Ok(user);
+    } catch (error) {
+      return Err({
+        UserDoesNotExist: id,
+      });
+    }
   }),
 
   getPatientProfile: query(
     [Principal],
-    Result(PatientProfile, UsersErrors) as any, //TODO: Fix this type
+    Result(PatientProfile, UsersErrors),
     async (userId) => {
-      return await usersService.getPatientProfile(userId);
+      try {
+        const profile = await usersService.getPatientProfile(userId);
+        return Ok(profile);
+      } catch (error: any) {
+        return Err({
+          UnexpectedError: error.message,
+        });
+      }
     }
   ),
 });

@@ -10,9 +10,9 @@ import {
 } from "azle";
 import { UsersCaller } from "../../domain/users/users.caller";
 import { User } from "../../domain/users/models/users.models";
-import { UsersErrors } from "../../domain/users/services/users.service.errors";
+import { UsersErrors } from "../../domain/users/users.canister.errors";
 import { PatientProfile } from "../../domain/patient-profiles/models/patient-profiles.models";
-import { AuthGuard } from "../../utilities/auth.guard";
+// import { AuthGuard } from "../../utilities/auth.guard";
 
 const usersCaller = new UsersCaller();
 let currentUserId: Principal;
@@ -24,36 +24,23 @@ export default Canister({
   }),
   create: update(
     [text, text, text],
-    User,
+    Result(User, UsersErrors),
     async (firstName, lastName, curp) => {
       const userId = ic.caller();
       return await usersCaller.create(userId, firstName, lastName, curp);
-    },
-    {
-      guard: AuthGuard,
     }
   ),
-  getMyData: query(
-    [],
-    Result(User, UsersErrors),
-    async () => {
-      ic.print({ currentUserId });
-      const userId = ic.caller();
-      return await usersCaller.get(userId);
-    },
-    {
-      guard: AuthGuard,
-    }
-  ),
+  getMyData: query([], Result(User, UsersErrors), async () => {
+    ic.print({ currentUserId });
+    const userId = ic.caller();
+    return await usersCaller.get(userId);
+  }),
   getMyPatientProfile: query(
     [],
     Result(PatientProfile, UsersErrors),
     async () => {
       const userId = ic.caller();
       return await usersCaller.getMyPatientProfile(userId);
-    },
-    {
-      guard: AuthGuard,
     }
   ),
   getMyPrescriptions: query([], text, () => {
