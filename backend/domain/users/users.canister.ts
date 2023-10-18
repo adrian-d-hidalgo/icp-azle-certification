@@ -8,9 +8,9 @@ const usersService = new UsersService();
 
 export default Canister({
   create: update(
-    [text, text, text],
+    [Principal, text, text, text],
     User,
-    async (firstName, lastName, curp) => {
+    async (id, firstName, lastName, curp) => {
       // TODO: The caller only can create its own user
       const data = {
         profile: {
@@ -20,7 +20,7 @@ export default Canister({
         },
       };
 
-      return usersService.create(data);
+      return usersService.create(id, data);
     }
   ),
 

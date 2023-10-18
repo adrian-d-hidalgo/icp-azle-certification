@@ -19,10 +19,6 @@ export class PatientProfilesService {
         diagnoses: [],
         prescriptions: [],
       },
-      permissions: {
-        doctors: [],
-        organizations: [],
-      },
     };
 
     this.profiles.insert(id, profile);

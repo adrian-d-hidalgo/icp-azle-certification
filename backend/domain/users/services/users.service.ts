@@ -8,9 +8,8 @@ export class UsersService {
   private users = StableBTreeMap(Principal, User, 0);
   private profileCanister = new PatientProfilesCaller();
 
-  public async create(data: CreateUserData) {
-    const id = generateId();
-    // Remove next line when init already works
+  public async create(id: Principal, data: CreateUserData) {
+    // TODO: Validate if user already exists with the same curp or official identifier
     const patientProfile = await this.profileCanister.create();
 
     const patient: UserType = {
