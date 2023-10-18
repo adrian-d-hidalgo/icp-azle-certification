@@ -16,7 +16,10 @@ export class PatientProfilesCaller {
   }
 
   public async create() {
-    const profile = await ic.call(this.canister.create);
-    return profile;
+    return ic.call(this.canister.create);
+  }
+
+  public async get(profileId: Principal) {
+    return ic.call(this.canister.get, { args: [profileId] });
   }
 }

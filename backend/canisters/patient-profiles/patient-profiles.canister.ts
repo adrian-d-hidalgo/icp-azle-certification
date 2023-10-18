@@ -39,12 +39,4 @@ export default Canister({
       );
     }
   ),
-
-  // getAllDiagnoses: query(
-  //   [Principal],
-  //   Result(Vec(Diagnosis), PatientProfilesErrors),
-  //   (profileId) => {
-  //     return patientProfilesService.getAllDiagnoses(profileId);
-  //   }
-  // ),
 });

@@ -40,21 +40,10 @@ export const MedicalHisory = Record({
   prescriptions: Vec(Principal),
 });
 
-export const PatientProfilePermission = Record({
-  id: Principal,
-  // TODO: Define Access Types
-});
-
-export const PatientProfilePermissions = Record({
-  doctors: Vec(PatientProfilePermission),
-  organizations: Vec(PatientProfilePermission),
-});
-
 export const PatientProfile = Record({
   id: Principal,
   cardex: Cardex,
   medicalHistory: MedicalHisory,
-  permissions: PatientProfilePermissions,
 });
 
 export type PatientProfileType = typeof PatientProfile;

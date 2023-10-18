@@ -42,4 +42,18 @@ export class UsersService {
 
     return Ok(user);
   }
+
+  public async getPatientProfile(userId: Principal) {
+    const userOpt = this.users.get(userId);
+
+    if ("None" in userOpt) {
+      return Err({
+        UserDoesNotExist: userId,
+      });
+    }
+
+    const user = userOpt.Some;
+
+    return this.profileCanister.get(user.patientProfile);
+  }
 }

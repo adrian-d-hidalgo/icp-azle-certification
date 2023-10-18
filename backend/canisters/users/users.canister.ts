@@ -2,6 +2,7 @@ import { Canister, Principal, query, Result, text, update, Vec } from "azle";
 import { User } from "./models/users.models";
 import { UsersErrors } from "./services/users.service.errors";
 import { UsersService } from "./services/users.service";
+import { PatientProfile } from "../patient-profiles/models/patient-profiles.models";
 
 const usersService = new UsersService();
 
@@ -19,9 +20,7 @@ export default Canister({
         },
       };
 
-      const user = await usersService.create(data);
-
-      return user;
+      return usersService.create(data);
     }
   ),
 
@@ -31,7 +30,14 @@ export default Canister({
   }),
 
   get: query([Principal], Result(User, UsersErrors), (id) => {
-    const user = usersService.get(id);
-    return user;
+    return usersService.get(id);
   }),
+
+  getPatientProfile: query(
+    [Principal],
+    Result(PatientProfile, UsersErrors) as any, //TODO: Fix this type
+    async (userId) => {
+      return await usersService.getPatientProfile(userId);
+    }
+  ),
 });
